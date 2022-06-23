@@ -1,47 +1,13 @@
-const knex = require("knex");
-const options = require("../config/configDB");
-const { userData } = require("./usersController");
-const database = knex(options.sqlite3);
-const tableProducts = "Products";
-const uID = userData;
+const Products = require("../models/products");
+const UserController = require("./usersController");
+const userController = new UserController();
 
 class ProductsController {
-  //>|  initHome
-  async initProducts() {
-    try {
-      await database.schema.hasTable(tableProducts).then(async (exists) => {
-        if (!exists) {
-          return await database.schema.createTable(tableProducts, (table) => {
-            table.increments("id").primary();
-            table.string("titulo");
-            table.string("descripcion");
-            table.integer("timestamp");
-            table.integer("precio");
-            table.string("img");
-            table.string("codigo");
-          });
-        }
-      });
-    } catch (error) {
-      console.log(error);
-      return res.redirect("/errorRoute");
-    }
-  }
-
-  //>|  deleteProducts
-  async deleteProducs() {
-    try {
-      await database.schema.dropTableIfExists(tableProducts);
-    } catch (error) {
-      console.log(error);
-      return res.redirect("/errorRoute");
-    }
-  }
-
   //>|  getProductsClient
   async getProductsClient(req, res) {
     try {
-      const productos = await database.from(tableProducts).select("*");
+      const uID = await userController.dataUser();
+      const productos = await Products.find().lean();
       res.render("productosClientes.ejs", { productos, uID });
     } catch (error) {
       return res.redirect("/errorRoute");
@@ -50,7 +16,8 @@ class ProductsController {
   // >| getProductsAdmin
   async getProductsAdmin(req, res) {
     try {
-      const productos = await database.from(tableProducts).select("*");
+      const uID = await userController.dataUser();
+      const productos = await Products.find().lean();
       res.render("productosAdmin.ejs", { productos, uID });
     } catch (error) {
       return res.redirect("/errorRoute");
@@ -59,11 +26,8 @@ class ProductsController {
   //>|  getProductId
   async getProductId(req, res) {
     try {
-      let producto = await database
-        .from(tableProducts)
-        .select("*")
-        .where("id", req.params.id);
-      producto = producto[0];
+      const uID = await userController.dataUser();
+      const producto = await Products.findById(req.params.id).lean();
       res.render("productoId.ejs", { producto, uID });
     } catch (error) {
       console.log(error);
@@ -74,7 +38,8 @@ class ProductsController {
   // >|  deleteProduct
   async deleteProduct(req, res) {
     try {
-      await database(tableProducts).where("id", req.params.id).del();
+      const id = req.params.id;
+      await Products.findByIdAndDelete(id);
       res.redirect("/api/productos/all");
     } catch (error) {
       return res.redirect("/errorRoute");
@@ -89,15 +54,15 @@ class ProductsController {
       const precioFormat = Number(precio);
       const date = new Date();
       const timestamp = ` ${date.getDay()}/ ${date.getMonth()}/${date.getFullYear()} - ${date.getHours()}: ${date.getMinutes()}: ${date.getSeconds()}`;
-      await database(tableProducts).insert({
-        titulo: titulo,
-        descripcion: descripcion,
+      const product = new Products({
+        titulo,
         precio: precioFormat,
-        timestamp: timestamp,
-        img: img,
-        codigo: codigo,
+        descripcion,
+        codigo,
+        img,
+        timestamp,
       });
-
+      await product.save();
       res.redirect("/api/productos/all");
     } catch (error) {
       console.log(error);
@@ -113,13 +78,14 @@ class ProductsController {
       const precioFormat = Number(precio);
       const date = new Date();
       const timestamp = ` ${date.getDay()}/ ${date.getMonth()}/${date.getFullYear()} - ${date.getHours()}: ${date.getMinutes()}: ${date.getSeconds()}`;
-      await database(tableProducts).where("id", req.params.id).update({
-        titulo: titulo,
-        descripcion: descripcion,
+      const id = req.params.id;
+      await Products.findByIdAndUpdate(id, {
+        titulo,
         precio: precioFormat,
-        timestamp: timestamp,
-        img: img,
-        codigo: codigo,
+        descripcion,
+        codigo,
+        img,
+        timestamp,
       });
       res.redirect("/api/productos/all");
     } catch (error) {

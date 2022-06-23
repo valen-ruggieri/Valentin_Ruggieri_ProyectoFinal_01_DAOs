@@ -4,12 +4,13 @@ const path = require("path");
 const multer = require("multer");
 const ProductsController = require("../../controllers/productsController");
 const productController = new ProductsController();
-const { userPermissionsClient,userPermissionsAdmin} = require("../../utils/permissions");
-const { Data } = require("../RouterUser/routerUser");
 const productSchema = require("../../Validations/productValidation");
 const validationProduct = require("../../utils/Middlewares/validationProduct");
-const userPermission = require("../../Validations/userPermission");
-const uID = Data;
+const {
+  userPermissionCliente,
+  userPermissionAdmin,
+} = require("../../Validations/userPermission");
+
 const storageContent = multer.diskStorage({
   destination: path.join(__dirname + "/public/images"),
   filename: (req, file, cb) => {
@@ -17,13 +18,10 @@ const storageContent = multer.diskStorage({
   },
 });
 
-
 routerProducts.use(express.static(path.join(__dirname + "/public")));
 routerProducts.use(express.static("public"));
 routerProducts.use(express.static("views"));
 routerProducts.use(express.static("partials"));
-
-
 
 //>|  multer config
 
@@ -37,37 +35,45 @@ routerProducts.use(
 
 // $                   CLIENTE
 
-// $   Puede ver y agregar productos al carrito como asi tambien logearse
-
 // >| getProducts
-routerProducts.get("/productos/tienda", async (req, res) => {
-  userPermission(userPermissionsClient(uID.userPermission))
-  await productController.getProductsClient(req, res);
-});
+routerProducts.get(
+  "/productos/tienda",
+  userPermissionCliente(),
+  async (req, res) => {
+    await productController.getProductsClient(req, res);
+  }
+);
 
 //>|  getProductId
 
-routerProducts.get("/productos/producto/:id", async (req, res) => {
-  userPermission(userPermissionsClient(uID.userPermission))
-  await productController.getProductId(req, res);
-});
+routerProducts.get(
+  "/productos/producto/:id",
+  userPermissionCliente(),
+  async (req, res) => {
+    await productController.getProductId(req, res);
+  }
+);
 
 //%                   ADMINISTRADOR
 
-//%     Puede agregar, editar y borrar productos como asi tambien logearse
-
 //>| getProducts
-routerProducts.get("/productos/all", async (req, res) => {
-  userPermission(userPermissionsAdmin(uID.userPermission))
-  await productController.getProductsAdmin(req, res);
-});
+routerProducts.get(
+  "/productos/all",
+  userPermissionAdmin(),
+  async (req, res) => {
+    await productController.getProductsAdmin(req, res);
+  }
+);
 
 // >| deleteProduct
 
-routerProducts.get("/productos/delete/:id", async (req, res) => {
-  userPermission(userPermissionsAdmin(uID.userPermission))
-  await productController.deleteProduct(req, res);
-});
+routerProducts.get(
+  "/productos/delete/:id",
+  userPermissionAdmin(),
+  async (req, res) => {
+    await productController.deleteProduct(req, res);
+  }
+);
 
 // >|  postProduct
 
@@ -75,13 +81,11 @@ routerProducts.post(
   "/productos/form",
   validationProduct(productSchema),
   async (req, res) => {
-    userPermission(userPermissionsAdmin(uID.userPermission))
     await productController.postProduct(req, res);
   }
 );
 
-routerProducts.get("/productos/form", (req, res) => {
-  userPermission(userPermissionsAdmin(uID.userPermission))
+routerProducts.get("/productos/form", userPermissionAdmin(), (req, res) => {
   res.render("formAdd.ejs");
 });
 
@@ -91,14 +95,16 @@ routerProducts.post(
   "/productos/update/:id",
   validationProduct(productSchema),
   async (req, res) => {
-    userPermission(userPermissionsAdmin(uID.userPermission))
     await productController.updateProduct(req, res);
   }
 );
 
-routerProducts.get("/productos/update/:id", (req, res) => {
-  userPermission(userPermissionsAdmin(uID.userPermission))
-  res.render("formUpdate.ejs");
-});
+routerProducts.get(
+  "/productos/update/:id",
+  userPermissionAdmin(),
+  (req, res) => {
+    res.render("formUpdate.ejs");
+  }
+);
 
 module.exports = routerProducts;

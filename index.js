@@ -3,6 +3,8 @@ const logger = require("./utils/logger");
 const http = require("http");
 const server = http.createServer(app);
 const PORT = 8080;
+require("dotenv").config();
+require('./config/configDB');
 server.listen(PORT, () => {
   logger.info(`Servidor listo en el puerto : ${PORT}`);
 });

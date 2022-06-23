@@ -1,43 +1,33 @@
 const express = require("express");
 const routerCarrito = express.Router();
 const path = require("path");
-const { userPermissionsClient } = require("../../utils/permissions");
-const { Data } = require("../RouterUser/routerUser.js");
 const CartController = require("../../controllers/cartsController");
-const userPermission = require("../../Validations/userPermission");
+const { userPermissionCliente } = require("../../Validations/userPermission");
 const cartController = new CartController();
-const uID = Data;
-
 
 routerCarrito.use(express.static(path.join(__dirname + "/public")));
 
+// >| getCart
 
-
-// >| getCart       
-
-routerCarrito.get("/carrito/productos", async (req, res) => {
-  userPermission(userPermissionsClient(uID.userPermission));
+routerCarrito.get("/carrito/productos", userPermissionCliente(),async (req, res) => {
   await cartController.getCart(req, res);
 });
 
 //>| addProductToCart
 
-routerCarrito.get("/carrito/add/:IDproducto", async (req, res) => {
-  userPermission(userPermissionsClient(uID.userPermission));
+routerCarrito.get("/carrito/add/:IDproducto",userPermissionCliente(), async (req, res) => {
   await cartController.addProductToCart(req, res);
 });
 
-//>| deleteCart     
+//>| deleteCart
 
-routerCarrito.get("/carrito/delete", async (req, res) => {
-  userPermission(userPermissionsClient(uID.userPermission));
+routerCarrito.get("/carrito/delete", userPermissionCliente(),async (req, res) => {
   await cartController.deleteCart(req, res);
 });
 
 //>| deleteProductToCart
 
-routerCarrito.get("/carrito/delete/:id", async (req, res) => {
-  userPermission(userPermissionsClient(uID.userPermission));
+routerCarrito.get("/carrito/delete/:id",userPermissionCliente(), async (req, res) => {
   await cartController.deleteProductToCart(req, res);
 });
 

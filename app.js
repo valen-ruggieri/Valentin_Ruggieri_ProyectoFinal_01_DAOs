@@ -4,10 +4,9 @@ const path = require("path");
 const routerCarrito = require("./router/RouterCarrito/routerCarrito");
 const routerChat = require("./router/RouterChat/routerChat");
 const routerError = require("./router/RouterErrorRoute/routerError");
-
 const routerHome = require("./router/RouterHome/routerHome");
 const routerProducts = require("./router/RouterProductos/routerProductos");
-const { routerUser } = require("./router/RouterUser/routerUser");
+const routerUser = require("./router/RouterUser/routerUser");
 
 app.use(express.static(path.join(__dirname + "/public")));
 app.use(express.urlencoded({ extended: true }));

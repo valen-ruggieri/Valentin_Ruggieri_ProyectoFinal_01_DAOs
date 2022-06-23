@@ -1,46 +1,24 @@
-const knex = require("knex");
-const options = require("../config/configDB");
-const { userData } = require("./usersController");
-const database = knex(options.sqlite3);
-const tableCart = "Cart";
-const uID = userData;
+const Carts = require("../models/carts");
+const Products = require("../models/products");
+const UserController = require("./usersController");
+const userController = new UserController();
 
 class CartController {
-  // >| initCart
-  async initCart() {
+  //>|    closeCart
+  async closeCart() {
     try {
-      await database.schema.hasTable(tableCart).then(async (exists) => {
-        if (!exists) {
-          return await database.schema.createTable(tableCart, (table) => {
-            table.increments("id").primary();
-            table.string("titulo");
-            table.string("descripcion");
-            table.integer("timestamp");
-            table.integer("precio");
-            table.string("img");
-            table.string("codigo");
-          });
-        }
-      });
+      await Carts.deleteMany();
     } catch (error) {
       console.log(error);
       return res.redirect("/errorRoute");
     }
   }
 
-  // >| deleteCart
-  async deleteCart() {
-    try {
-      await database.schema.dropTableIfExists(tableCart);
-    } catch (error) {
-      console.log(error);
-      return res.redirect("/errorRoute");
-    }
-  }
   // >| getCart
   async getCart(req, res) {
     try {
-      const productosCarrito = await database.from(tableCart).select("*");
+      const uID = await userController.dataUser();
+      const productosCarrito = await Carts.find().lean();
       res.render("carrito.ejs", { productosCarrito, uID });
     } catch (error) {
       console.log(error);
@@ -51,12 +29,10 @@ class CartController {
   // >| addProductToCart
   async addProductToCart(req, res) {
     try {
-      let producto = await database
-        .from("Products")
-        .where("id", req.params.IDproducto);
-      producto = producto[0];
-      await database(tableCart).insert(producto);
-
+      const id = req.params.IDproducto;
+      const product = await Products.findById(id).lean();
+      const cart = new Carts(product);
+      await cart.save();
       res.redirect("/api/productos/tienda");
     } catch (error) {
       console.log(error);
@@ -67,7 +43,7 @@ class CartController {
   // >| deleteCart
   async deleteCart(req, res) {
     try {
-      await database(tableCart).del();
+      await Carts.deleteMany();
       res.redirect("/api/carrito/productos");
     } catch (error) {
       console.log(error);
@@ -78,8 +54,8 @@ class CartController {
   // >| deleteProductToCart
   async deleteProductToCart(req, res) {
     try {
-      console.log(req.params.id);
-      await database.from(tableCart).where("id", req.params.id).del();
+      const id = req.params.id;
+      await Carts.findByIdAndDelete(id);
       res.redirect("/api/carrito/productos");
     } catch (error) {
       console.log(error);

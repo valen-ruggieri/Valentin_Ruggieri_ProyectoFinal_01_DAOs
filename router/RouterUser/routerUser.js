@@ -3,21 +3,27 @@ const routerUser = express.Router();
 const path = require("path");
 const validation = require("../../utils/Middlewares/validationMiddleware");
 const userschema = require("../../Validations/userValidation");
-const {UserController,userData} = require("../../controllers/usersController");
+const UserController= require("../../controllers/usersController");
+const SessionController = require("../../controllers/sessionController");
 const userController = new UserController();
+const sessionController = new SessionController();
 
 routerUser.use(express.static(path.join(__dirname + "/public")));
 
-const Data =userData;
 
-//>|  getUser 
+//>|  getUser
 routerUser.get("/user", (req, res) => {
   res.render("user.ejs");
 });
 
-//>|  postUser  
+//>|  postUser
 routerUser.post("/user", validation(userschema), async (req, res) => {
-  userController.addUser(req,res);
+  userController.addUser(req, res);
 });
 
-module.exports = { routerUser, Data };
+//>|  userSignOut
+routerUser.get("/user/signOut", async (req, res) => {
+  sessionController.signOutGoToHome(req,res);
+});
+
+module.exports = routerUser;

@@ -1,38 +1,13 @@
-const knex = require("knex");
-const options = require("../config/configDB");
-const { userData } = require("./usersController");
-const database = knex(options.sqlite3);
-const tableChat = "Chat";
-const uID = userData;
+const Chats = require("../models/chats");
+const UserController = require("./usersController");
+const userController = new UserController();
 
 class ChatController {
-  // >|   inintChat
-
-  async initChaT() {
-    try {
-      await database.schema.createTable(tableChat, (table) => {
-        table.string("autor");
-        table.string("date");
-        table.string("text");
-      });
-      console.log("chat iniciado");
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async deleteChat() {
-    try {
-      await database.schema.dropTableIfExists(tableChat);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   // >| getMessages
   async getMessages(req, res) {
     try {
-      const messages = await database.from(tableChat).select("*");
+      const uID = await userController.dataUser();
+      const messages = await Chats.find();
       res.render("chatPage.ejs", { messages, uID });
     } catch (error) {
       console.log(error);
@@ -40,12 +15,14 @@ class ChatController {
   }
 
   // >|  addMessages
-  async addMessages(message) {
+  async addMessages(req, res) {
     try {
-      const { autor, text } = message;
+      const { autor, text } = req.body;
       const date = new Date();
       const dateNow = ` ${date.getHours()}: ${date.getMinutes()}: ${date.getSeconds()}`;
-      await database(tableChat).insert({ autor, date: dateNow, text });
+      const chat = new Chats({ autor, date: dateNow, text });
+      await chat.save();
+      res.redirect("/chat");
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +31,7 @@ class ChatController {
   // >|  deleteMessages
   async deleteMessages() {
     try {
-      await database(tableChat).del();
+      await Chats.deleteMany();
     } catch (error) {
       console.log(error);
     }

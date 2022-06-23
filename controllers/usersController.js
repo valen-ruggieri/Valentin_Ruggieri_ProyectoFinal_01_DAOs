@@ -1,60 +1,34 @@
-const knex = require("knex");
-const options = require("../config/configDB");
-const database = knex(options.sqlite3);
-const tableUsers = "Users";
-let userData = {};
+const Users = require("../models/users");
 
 class UserController {
-  //>|  initHome
-
-  async initUser() {
-    try {
-      await database.schema.hasTable(tableUsers).then(async (exists) => {
-        if (!exists) {
-          return await database.schema.createTable(tableUsers, (table) => {
-            table.increments("id").primary();
-            table.string("userName");
-            table.string("email");
-            table.string("password");
-            table.string("userType");
-          });
-        }
-      });
-    } catch (error) {
-      const errorName = "Failed create table users";
-      const errorDescription = error;
-      return res.render("errorUser.ejs", { errorName, errorDescription });
-    }
-  }
-
-  //>|  deleteUser
+  // //>|  deleteUser
   async deleteUser() {
     try {
-      await database.schema.dropTableIfExists(tableUsers);
+      await Users.deleteMany();
     } catch (error) {
       console.log(error);
       return res.redirect("/errorRoute");
     }
   }
-
+  //>| dataUser
+  async dataUser() {
+    try {
+      const user = await Users.find().lean();
+      const uID = user[0];
+      return uID;
+    } catch (error) {
+      console.log(error);
+      return res.redirect("/errorRoute");
+    }
+  }
   // >|  addUser
   async addUser(req, res) {
     try {
       const { email, password, userName, userType } = req.body;
-      await database(tableUsers).insert({
-        email,
-        password,
-        userName,
-        userType,
-      });
-      userData.userPermission = userType;
-      userData.userName = userName;
-      console.log(
-        "Sesion de " +
-          userData.userPermission +
-          " Iniciada - User:" +
-          userData.userName
-      );
+      const user = new Users({ email, password, userName, userType });
+      await user.save();
+
+      console.log("Sesion de " + userType + " Iniciada - User:" + userName);
       if (userType === "cliente") {
         return res.redirect("/api/productos/tienda");
       } else {
@@ -68,4 +42,4 @@ class UserController {
   }
 }
 
-module.exports = { UserController, userData };
+module.exports = UserController;

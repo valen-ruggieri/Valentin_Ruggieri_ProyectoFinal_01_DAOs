@@ -2,38 +2,24 @@ const express = require("express");
 const routerChat = express.Router();
 const path = require("path");
 const ChatController = require("../../controllers/chatController");
-const { userPermissionsClient } = require("../../utils/permissions");
-const { Data } = require("../RouterUser/routerUser");
+const { userPermissionCliente } = require("../../Validations/userPermission");
 const chatController = new ChatController();
-const userPermission = require("../../Validations/userPermission");
-const uID = Data;
-
-
-
 
 routerChat.use(express.static(path.join(__dirname + "/public")));
 routerChat.use(express.static("views"));
 
-
-
-//>| postChat   
-routerChat.post("/chat", async(req, res) => {
-  userPermission(userPermissionsClient(uID.userPermission))
-  const { autor, text } = req.body;
-  await chatController.addMessages({ autor, text });
-
-  res.redirect("/chat");
+//>| postChat
+routerChat.post("/chat", userPermissionCliente(), async (req, res) => {
+  chatController.addMessages(req, res);
 });
 
-//>|  getChat   
-routerChat.get("/chat", async (req, res) => {
-  userPermission(userPermissionsClient(uID.userPermission))
+//>|  getChat
+routerChat.get("/chat", userPermissionCliente(), async (req, res) => {
   await chatController.getMessages(req, res);
 });
 
-//>|  deleteChat  
-routerChat.get("/chat/delete", async (req, res) => {
-  userPermission(userPermissionsClient(uID.userPermission))
+//>|  deleteChat
+routerChat.get("/chat/delete", userPermissionCliente(), async (req, res) => {
   await chatController.deleteMessages();
   res.redirect("/chat");
 });

@@ -3,6 +3,41 @@ const UserController = require("./usersController");
 const userController = new UserController();
 
 class ProductsController {
+  //>|getProductsPriceMin1000
+  async getProductsPriceMin1000(req, res) {
+    try {
+      const uID = await userController.dataUser();
+      const productos = await Products.find({ precio: { $lt: 1000 } });
+      res.render("productosClientes.ejs", { productos, uID });
+    } catch (error) {
+      return res.redirect("/errorRoute");
+    }
+  }
+
+  //>| getProductsPrice1000min30000
+  async getProductsPrice1000min30000(req, res) {
+    try {
+      const uID = await userController.dataUser();
+      const productos = await Products.find({
+        $and: [{ precio: { $gte: 1000 } }, { precio: { $lt: 3000 } }],
+      });
+      res.render("productosClientes.ejs", { productos, uID });
+    } catch (error) {
+      return res.redirect("/errorRoute");
+    }
+  }
+
+  //>| getProductsPriceMax3000
+  async getProductsPriceMax3000(req, res) {
+    try {
+      const uID = await userController.dataUser();
+      const productos = await Products.find({ precio: { $gt: 3000 } });
+      res.render("productosClientes.ejs", { productos, uID });
+    } catch (error) {
+      return res.redirect("/errorRoute");
+    }
+  }
+
   //>|  getProductsClient
   async getProductsClient(req, res) {
     try {
@@ -67,6 +102,22 @@ class ProductsController {
     } catch (error) {
       console.log(error);
       return res.redirect("/errorRoute");
+    }
+  }
+
+  // >| postFilter
+  async postFilter(req, res) {
+    const { filter } = req.body;
+    if (filter === "1") {
+      return await this.getProductsPriceMin1000(req, res);
+    } else if (filter === "2") {
+      return await this.getProductsPrice1000min30000(req, res);
+    } else if (filter === "3") {
+      return await this.getProductsPriceMax3000(req, res);
+    } else if (filter === "0") {
+      return await this.getProductsClient(req, res);
+    } else {
+      return res.redirect("/api/productos/tienda");
     }
   }
 

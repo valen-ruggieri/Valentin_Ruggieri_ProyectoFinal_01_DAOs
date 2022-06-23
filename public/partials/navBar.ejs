@@ -22,6 +22,17 @@
     <a  href="/api/carrito/productos" class="nav-link text-decoration-none    aLinkNav ">Cart<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-cart ms-1 mb-1" viewBox="0 0 16 16">
       <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
     </svg></a>
+    <form class=" formFilter" method="POST">
+<select class=" selectFilter " aria-label=".form-select-sm example" name="filter">
+  <option  value="0">all</option>
+  <option value="1">price < 1000</option>
+  <option value="2">price > 1000 < 3000 </option>
+  <option value="3">price > 3000</option>
+</select>
+<button class="buttonFilter" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+  <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+</svg></button>
+</form>
     <a class="nav-link text-decoration-none permissionsText "> User:   <small class="ms-2 fs-6"><%= uID.userName %></small> </a>   
     <a class="nav-link text-decoration-none permissionsText ">Permissions:  <small class="ms-2 fs-6"><%= uID.userType %></small>  </a>
     <!-- <a class="nav-link text-decoration-none permissionsText "> uID:   <small class="ms-2 fs-6"><%= uID.id %></small> </a> -->

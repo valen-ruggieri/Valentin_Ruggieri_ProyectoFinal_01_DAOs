@@ -1,11 +1,11 @@
-# Valentin_Ruggieri_ProyectoFinal_01_SQL
+# Valentin_Ruggieri_ProyectoFinal_01_MongoDB
 
 ## Funcionamiento
 
 ![Video de funcionamiento de la App](https://media.giphy.com/media/OgKHI1g8jpomp6K9VK/giphy.gif)
 
 ## Inicio
-En este desafio migraremos todo el proyecto final creado hasta el momento con firestore database a base de datos relacionales mysql y sqlite3
+En este desafio migraremos todo el proyecto final creado hasta el momento con firestore database a MongoDB Atlas con mongoose
 
 ## Permisos
 Los tipos de permisos sirven para poder acceder a difernetes vistas como asi tambien funcionalidades.
@@ -41,11 +41,10 @@ Los errores contemplados en nuestro ecommerce son:
   - Socket.io para poder crear el chat de la pagina del cliente.
   - Css y Bootstrap para poder realizar el maquetado, diseno y animaciones de nuestro proyecto.
   - Yup para poder crear los esquemas de validaciones.
-  - Mysql para poder almacenar alli nuestros datos de usuarios, carritos y productos.
-  - Sqlite3 para poder almacenar los mensagges del chat e interactuar con ellos.
+  - mongoose para las consultas con la base de datos MongoDB atlas
  
  ## Especificaciones extras
-  - Para poder realizar un inicio de sesion utilizamos la informacion brindada en el registro del usuario, la cual es almacenada en firestore para luego ser accedida y de alli poder obtener el id de usuario y los permisos del mismo y guardarlos en una variable la cual usaremos para validar las rutas y mostar informacion del mismo.
+  - Para poder realizar un inicio de sesion utilizamos la informacion brindada en el registro del usuario, la cual es almacenada en la base de datos para luego ser accedida y de alli poder obtener el id de usuario y los permisos del mismo y guardarlos en una variable la cual usaremos para validar las rutas y mostar informacion del mismo.
   - Utilizamos plantillas para pooder manejar renderizados condicionales en algunas vistas y el renderizado de nuestros productos en otras.
   - El carrito de productos solo puede ser creado por el usuario cliente y esta alejado del alcance del administrador, este mismo carrito sera guardado dentro de usuario en la base de datos.
 
@@ -58,7 +57,7 @@ Los errores contemplados en nuestro ecommerce son:
 - Css
 - Yup
 - Socket.io
-- Mysql
-- Sqlite3
+- mongoose
+- mongoDB Atlas
 
 

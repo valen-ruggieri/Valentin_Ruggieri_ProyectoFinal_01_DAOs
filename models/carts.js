@@ -9,6 +9,6 @@ const cartSchema = new Schema({
   codigo: { type: String, unique: true, required: true },
 });
 
-const Carts = mongoose.model("Carts", cartSchema);
 
-module.exports = Carts;
+
+module.exports = cartSchema;

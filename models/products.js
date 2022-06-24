@@ -9,6 +9,6 @@ const productSchema = new Schema({
   codigo: { type: String, unique: true, required: true },
 });
 
-const Products = mongoose.model("Products", productSchema);
 
-module.exports = Products;
+
+module.exports = productSchema;

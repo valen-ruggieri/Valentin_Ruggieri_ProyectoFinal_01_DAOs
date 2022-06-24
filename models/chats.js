@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-// const {nanoid} = require('nanoid')
+
 
 const chatSchema = new Schema({
   autor: { type: String, unique: false ,required: true },

@@ -1,4 +1,5 @@
-const Chats = require("../models/chats");
+
+const { chatDao, cartDao, productsDao } = require("../DAOs/swicht");
 const UserController = require("./usersController");
 const userController = new UserController();
 
@@ -7,8 +8,10 @@ class ChatController {
   async getMessages(req, res) {
     try {
       const uID = await userController.dataUser();
-      const messages = await Chats.find();
-      res.render("chatPage.ejs", { messages, uID });
+      const messages = await chatDao.getAll();
+      const productsCount = await productsDao.countAll()
+      const cartCount = await cartDao.countAll()
+      res.render("chatPage.ejs", { messages, uID,productsCount ,cartCount});
     } catch (error) {
       console.log(error);
     }
@@ -20,8 +23,7 @@ class ChatController {
       const { autor, text } = req.body;
       const date = new Date();
       const dateNow = ` ${date.getHours()}: ${date.getMinutes()}: ${date.getSeconds()}`;
-      const chat = new Chats({ autor, date: dateNow, text });
-      await chat.save();
+      await chatDao.create({ autor, date: dateNow, text });
       res.redirect("/chat");
     } catch (error) {
       console.log(error);
@@ -31,7 +33,7 @@ class ChatController {
   // >|  deleteMessages
   async deleteMessages() {
     try {
-      await Chats.deleteMany();
+      await chatDao.deleteAll();
     } catch (error) {
       console.log(error);
     }

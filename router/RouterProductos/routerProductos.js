@@ -35,14 +35,6 @@ routerProducts.use(
 
 // $                   CLIENTE
 
-// >|  postFilter
-routerProducts.post(
-  "/productos/tienda",async (req, res) => {
-productController.postFilter(req,res)
-  }
-);
-
-
 // >| getProducts
 routerProducts.get(
   "/productos/tienda",

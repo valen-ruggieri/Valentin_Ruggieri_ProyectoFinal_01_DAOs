@@ -6,7 +6,8 @@ const app = initializeApp({
   credential: applicationDefault(),
 });
 
-const db = getFirestore(app)
-if(db){console.log("firestore connect")}
+const databaseFR = getFirestore(app)
+// if(databaseFR){console.log("firestore connect")}
+// else{console.log('no hay db fr')}
 
-module.exports = db;
+module.exports = databaseFR;

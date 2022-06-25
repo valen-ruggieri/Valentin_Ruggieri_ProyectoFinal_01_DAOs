@@ -401,6 +401,17 @@ color: #1d1d1d;;
 .spaceAdminNavBar {
   margin-left: 300px;
 }
+.countProducts{
+  color: #ffffff;
+  background-color: #fe601d;
+  border-radius: 80%;
+  padding: 0px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  position: absolute;
+  top: 20%;
+}
+
 
 /* carrito */
 

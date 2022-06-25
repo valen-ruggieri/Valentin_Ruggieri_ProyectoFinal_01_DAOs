@@ -26,7 +26,7 @@
     <% if(productos.length){%> 
         <div class="d-flex flex-row row ms-2 mb-5">
         <% productos.forEach((producto ,key) => { %> 
-            <div class="card  m-3 cardProduct" style="width: 15rem;">
+            <div class="card  m-5 cardProduct" style="width: 15rem;">
               <img src="../images/<%=  producto.img %>" class="cardImage" width="150px" height="150px" alt="<%= producto.img %>" >
                 <div class="card-body   ">
                   <a  class="aLinkToProduct "><h5 class="card-title"><%= producto.titulo %></h5></a>

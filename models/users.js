@@ -8,5 +8,4 @@ const usersSchema = new Schema({
 });
 
 
-
 module.exports = usersSchema;

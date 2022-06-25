@@ -1,10 +1,11 @@
-const Users = require("../models/users");
+const { userDao } = require("../DAOs/swicht");
+
 
 class UserController {
   // //>|  deleteUser
   async deleteUser() {
     try {
-      await Users.deleteMany();
+      await userDao.deleteAll()
     } catch (error) {
       console.log(error);
       return res.redirect("/errorRoute");
@@ -13,11 +14,11 @@ class UserController {
   //>| dataUser
   async dataUser() {
     try {
-      const user = await Users.find().lean();
+      const user = await userDao.getAll()
       const uID = user[0];
       return uID;
     } catch (error) {
-      console.log(error);
+      console.log(error+'acasaa');
       return res.redirect("/errorRoute");
     }
   }
@@ -25,12 +26,10 @@ class UserController {
   async addUser(req, res) {
     try {
       const { email, password, userName, userType } = req.body;
-      const user = new Users({ email, password, userName, userType });
-      await user.save();
-
+     await userDao.create({ email, password, userName, userType });
       console.log("Sesion de " + userType + " Iniciada - User:" + userName);
-      if (userType === "cliente") {
-        return res.redirect("/api/productos/tienda");
+     if (userType === "cliente") {
+         return res.redirect("/api/productos/tienda");
       } else {
         return res.redirect("/api/productos/all");
       }

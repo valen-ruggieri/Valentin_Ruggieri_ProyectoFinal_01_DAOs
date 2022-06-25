@@ -1,9 +1,11 @@
-const Users = require("../models/users");
+const { userDao } = require("../DAOs/swicht");
+
+
 
 
 const userPermissionAdmin = () => async(req, res, next) => {
   try {
-   const user =  await Users.find({}).lean()
+   const user =  await userDao.getAll()
    const permissions = user[0].userType
     if (permissions === 'administrador') {
       next();
@@ -20,7 +22,7 @@ const userPermissionAdmin = () => async(req, res, next) => {
 
 const userPermissionCliente = () => async(req, res, next) => {
   try {
-   const user =  await Users.find({}).lean()
+   const user =  await userDao.getAll()
    const permissions = user[0].userType
     if (permissions === 'cliente') {
       next();

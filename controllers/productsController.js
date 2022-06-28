@@ -14,7 +14,7 @@ class ProductsController {
       const productos = await productsDao.getAll();
       const productsCount = await productsDao.countAll()
       const cartCount = await cartDao.countAll();
-      res.render("productosClientes.ejs", { productos ,uID, productsCount ,cartCount:cartCount});
+      res.render("productosClientes.ejs", { productos ,uID, productsCount:productsCount ,cartCount:cartCount});
     } catch (error) {
       return res.redirect("/errorRoute");
     }

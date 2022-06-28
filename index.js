@@ -6,7 +6,7 @@ const PORT = 8080;
 
 
 require("dotenv").config();
-require('./config/configDB');
+require('./config/configMongoDB');
 require('./config/configFirestore')
 server.listen(PORT, () => {
   logger.info(`Servidor listo en el puerto : ${PORT}`);

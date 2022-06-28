@@ -6,6 +6,7 @@ const chatController = new ChatController();
 const usersController = new UserController();
 
 class SessionController {
+  
 
   async signOutGoToHome(req,res) {
     try {

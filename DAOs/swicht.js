@@ -6,8 +6,7 @@ let userDao;
 
 switch (process.env.DB_CONNECTION) {
   case "mongoDB":
-
-  console.log('mongoDB active')
+    console.log("mongoDB active");
     const MongoDBProducts = require("./products/mongoDBProducts");
     productsDao = new MongoDBProducts();
 
@@ -22,7 +21,7 @@ switch (process.env.DB_CONNECTION) {
 
     break;
   case "firebase":
-    console.log('firebaseDB active')
+    console.log("firebaseDB active");
     const FirebaseProducts = require("./products/firebaseProducts");
     productsDao = new FirebaseProducts();
 
@@ -34,6 +33,21 @@ switch (process.env.DB_CONNECTION) {
 
     const FirebaseUser = require("./users/firebaseUser");
     userDao = new FirebaseUser();
+
+    break;
+  case "SQL":
+    console.log("SQL active");
+    const SQLProducts = require("./products/SQLProducts");
+    productsDao = new SQLProducts();
+
+    const SQLCart = require("./carts/SQLCart");
+    cartDao = new SQLCart();
+
+    const SQLChat = require("./chats/SQLChat");
+    chatDao = new SQLChat();
+
+    const SQLUser = require("./users/SQLUsers");
+    userDao = new SQLUser();
 
     break;
   default:

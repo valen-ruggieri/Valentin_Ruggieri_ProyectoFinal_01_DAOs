@@ -2,6 +2,7 @@ const { userDao } = require("../DAOs/swicht");
 
 
 class UserController {
+  
   // //>|  deleteUser
   async deleteUser() {
     try {
@@ -28,11 +29,11 @@ class UserController {
       const { email, password, userName, userType } = req.body;
      await userDao.create({ email, password, userName, userType });
       console.log("Sesion de " + userType + " Iniciada - User:" + userName);
-     if (userType === "cliente") {
-         return res.redirect("/api/productos/tienda");
+      if (userType === "cliente") {
+        return res.redirect("/api/productos/tienda");
       } else {
-        return res.redirect("/api/productos/all");
-      }
+         return res.redirect("/api/productos/all");
+     }
     } catch (error) {
       const errorName = "Failed create table users";
       const errorDescription = error;

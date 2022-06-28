@@ -5,10 +5,10 @@
 ![Video de funcionamiento de la App](https://media.giphy.com/media/OgKHI1g8jpomp6K9VK/giphy.gif)
 
 ## Inicio
-En este desafio migraremos todo el proyecto final creado hasta el momento con firestore database a MongoDB Atlas con mongoose
+En este desafio migraremos todo el proyecto final al patron de diseño DAOs con el cual podremos utilizar diferentes bases de datos sin tener que cambiar toda la configuracion de nuestra app.
 
 ## Permisos
-Los tipos de permisos sirven para poder acceder a difernetes vistas como asi tambien funcionalidades.
+Los tipos de permisos sirven para poder acceder a diferentes vistas como asi tambien funcionalidades.
 Nuestro ecommerce consta de dos tipos de permisos: Cliente y Administrador.
 
 ### Cliente
@@ -57,7 +57,10 @@ Los errores contemplados en nuestro ecommerce son:
 - Css
 - Yup
 - Socket.io
-- mongoose
-- mongoDB Atlas
+- Mongoose
+- MongoDB Atlas
+- Firebase
+- Mysql
+- Sqlite3
 
 
